@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.apache.commons.io.FileUtils;
 
 import com.umeng.editor.decode.AXMLDoc;
@@ -16,38 +21,48 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try{
-			Args arg = Args.parseArgs(args);
-		
-			if(arg == null){
-				System.err.println("Usage:");
-				System.err.println("AndroidManifest.xml dir  xxx [xxx] [xxx]");
-				System.exit(0);
+//			Args arg = Args.parseArgs(args);
+//
+//			if(arg == null){
+//				System.err.println("Usage:");
+//				System.err.println("AndroidManifest.xml dir  xxx [xxx] [xxx]");
+//				System.exit(0);
+//			}
+
+			Options options = new Options();
+			options.addOption("f", true, "input AndroidManifest.xml");
+			options.addOption("k", true, "meta-data key");
+			options.addOption("v", true, "meta-data key ==> value");
+			options.addOption("o", true, "out file name");
+
+			CommandLineParser parser = new DefaultParser();
+			CommandLine cmd = parser.parse( options, args);
+
+			String xml = cmd.getOptionValue("f");
+			String key = cmd.getOptionValue("k");
+			String value = cmd.getOptionValue("v");
+			String out = cmd.getOptionValue("o");
+			if (xml == null || key == null || value == null || out == null ) {
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp( "java -jar axmleditor.jar ", options );
 			}
-			
-			cloneAXML(new File(arg.mAXML), arg.mDir, arg.mChannels);
+
+			cloneAXML(new File(xml), key, value, out);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
-	private static void cloneAXML(File axml, String dir, String[] channels) throws Exception{
-		if(dir != null){
-			File f = new File(dir);
-			if(f.isFile() || !f.exists()){
-				f.mkdirs();
-			}
-		}
+	private static void cloneAXML(File axml, String key, String value, String out) throws Exception{
 		
 		AXMLDoc doc = new AXMLDoc();
 		doc.parse(new FileInputStream(axml));
 		
 		ChannelEditor editor = new ChannelEditor(doc);
-		
-		for(String chan : channels){
-			editor.setChannel(chan);
-			editor.commit();
-			doc.build(new FileOutputStream(new File(dir,String.format("axml_%s.xml", chan))));
-		}	
+		editor.setChannelName(key);
+		editor.setChannel(value);
+		editor.commit();
+		doc.build(new FileOutputStream(new File(out)));
 	}
 	
 	static class Args {

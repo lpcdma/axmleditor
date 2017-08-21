@@ -13,6 +13,10 @@ apply plugin: 'java'
 jar {
     manifest {
         attributes 'Main-Class': 'com.umeng.editor.Main'
+        attributes 'Class-Path': 'libs/commons-cli-1.4.jar'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 

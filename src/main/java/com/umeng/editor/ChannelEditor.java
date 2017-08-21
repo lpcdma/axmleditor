@@ -34,6 +34,11 @@ public class ChannelEditor {
 	public void setChannel(String channel){
 		mChannelValue = channel;
 	}
+
+	public void setChannelName(String name) {
+		mChannelName = name;
+	}
+
 	
 	//First add resource and get mapping ids
 	private void registStringBlock(StringBlock sb){
