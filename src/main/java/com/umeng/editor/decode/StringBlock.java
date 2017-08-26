@@ -116,7 +116,10 @@ public class StringBlock implements IAXMLSerialize{
 				
 				for(int i =0; i < mStringsCount ; i++){
 					int offset = mPerStrOffset[i];
-		        	short len = toShort(rawStrings[offset], rawStrings[offset+1]);
+					byte[] tmp = {0,0,0,0};
+					tmp[3] = rawStrings[offset];
+					tmp[2] = rawStrings[offset+1];
+		        	int len = toUShort(tmp);//toShort(tmp1, tmp2);
 					mStrings.add(i,new String(rawStrings,offset+2, len*2, Charset.forName("UTF-16LE")));
 				}
 			}
@@ -262,8 +265,16 @@ public class StringBlock implements IAXMLSerialize{
         
         private short toShort(short byte1, short byte2)
         {
-            return (short)((byte2 << 8) + byte1);
+            return ((short)((byte2 << 8) + byte1));
         }
+
+        private int toUShort(byte[] data) {
+			int i= (data[0]<<24)&0xff000000|
+					(data[1]<<16)&0x00ff0000|
+					(data[2]<< 8)&0x0000ff00|
+					(data[3]<< 0)&0x000000ff;
+			return i;
+		}
         
         public Style getStyle(int index){
         	return mStyles.get(index);
