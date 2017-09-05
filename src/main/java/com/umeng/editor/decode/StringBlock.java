@@ -74,6 +74,18 @@ public class StringBlock implements IAXMLSerialize{
 			mStrings.add(str);
 			return ( mStrings.size() - 1);
 		}
+
+		public int addStringByIds(String str, int id) {
+			mStrings.add(id, str);
+			return id;
+		}
+
+		public int putStringByIds(String str, int id) {
+			if(containsString(str)){
+				return getStringMapping(str);
+			}
+			return addStringByIds(str, id);
+		}
 		
 		public String setString(int index, String str){
 			return mStrings.set(index, str);
@@ -85,6 +97,10 @@ public class StringBlock implements IAXMLSerialize{
 		
 		public int getStringCount(){
 			return mStrings.size();
+		}
+
+		public int getStringIndex(String str){
+			return mStrings.indexOf(str);
 		}
 		
         /**

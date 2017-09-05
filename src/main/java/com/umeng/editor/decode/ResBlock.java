@@ -7,6 +7,10 @@ public class ResBlock implements IAXMLSerialize{
 	
 	private int mChunkSize;
 	private int[] mRawResIds;
+
+	public void setRawResIds(int[] rawResIds) {
+		mRawResIds = rawResIds;
+	}
 	
 	public void print(){
 		StringBuilder sb = new StringBuilder();
@@ -50,6 +54,15 @@ public class ResBlock implements IAXMLSerialize{
 	
 	public int[] getResourceIds(){
 		return mRawResIds;
+	}
+
+	public int getIdIndex(int id) {
+		for (int i = 0; i < mRawResIds.length; i++) {
+			if (id == mRawResIds[i]){
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	public int getResourceIdAt(int index){
