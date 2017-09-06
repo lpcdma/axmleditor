@@ -154,6 +154,10 @@ public class BTagNode extends BXMLNode {
 			return mRawAttrs.toArray(new Attribute[mRawAttrs.size()]);
 		}
 	}
+
+	public ArrayList<Attribute> getAttributes(){
+		return (ArrayList<Attribute>)mRawAttrs;
+	}
 	
 	public void setAttribute(Attribute attr){
 		if(mRawAttrs == null){
@@ -161,6 +165,14 @@ public class BTagNode extends BXMLNode {
 		}
 		
 		mRawAttrs.add(attr);
+	}
+
+	public void setAttribute(Attribute attr, int pos){
+		if(mRawAttrs == null){
+			mRawAttrs = new ArrayList<Attribute>();
+		}
+
+		mRawAttrs.add(pos, attr);
 	}
 	
 	/**
