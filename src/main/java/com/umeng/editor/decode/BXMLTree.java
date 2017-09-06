@@ -74,7 +74,7 @@ public class BXMLTree implements IAXMLSerialize{
 		
 		end:while(true){
 			chunkType = reader.readInt();
-			
+			//System.out.println(String.format("chunkType ==> %x", chunkType));
 			switch(chunkType){
 			case NODE_START:
 			{
@@ -96,7 +96,7 @@ public class BXMLTree implements IAXMLSerialize{
 			break;
 			case TEXT:
 			{
-				System.out.println("Hello Text");
+				//System.out.println("Hello Text");
 				
 			}
 			break;

@@ -24,6 +24,8 @@ public class BNSNode extends BXMLNode {
 		int ffffx0 = reader.readInt(); //unused int value(0xFFFF)
 		mPrefix = reader.readInt();
 		mUri = reader.readInt();
+//		System.out.println(String.format("mPrefix ==> %d", mPrefix));
+//		System.out.println(String.format("mUri ==> %d", mUri));
 	}
 	
 	@SuppressWarnings("unused")
@@ -35,7 +37,12 @@ public class BNSNode extends BXMLNode {
 		int uri = reader.readInt();
 		
 		if((prefix != mPrefix) || (uri != mUri) ){
-			throw new IOException("Invalid end element");
+//			System.out.println(String.format("prefix ==> %d", prefix));
+//			System.out.println(String.format("mPrefix ==> %d", mPrefix));
+//			System.out.println(String.format("uri ==> %d", uri));
+//			System.out.println(String.format("mUri ==> %d", mUri));
+			//throw new IOException("Invalid end element");
+			System.out.println("Invalid end element");
 		}
 	}
 	

@@ -16,6 +16,8 @@
 
 package com.umeng.editor.decode;
 
+import com.umeng.editor.utils.HexDump;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -72,6 +74,18 @@ public class StringBlock implements IAXMLSerialize{
 			mStrings.add(str);
 			return ( mStrings.size() - 1);
 		}
+
+		public int addStringByIds(String str, int id) {
+			mStrings.add(id, str);
+			return id;
+		}
+
+		public int putStringByIds(String str, int id) {
+			if(containsString(str)){
+				return getStringMapping(str);
+			}
+			return addStringByIds(str, id);
+		}
 		
 		public String setString(int index, String str){
 			return mStrings.set(index, str);
@@ -83,6 +97,10 @@ public class StringBlock implements IAXMLSerialize{
 		
 		public int getStringCount(){
 			return mStrings.size();
+		}
+
+		public int getStringIndex(String str){
+			return mStrings.indexOf(str);
 		}
 		
         /**
@@ -120,6 +138,9 @@ public class StringBlock implements IAXMLSerialize{
 					tmp[3] = rawStrings[offset];
 					tmp[2] = rawStrings[offset+1];
 		        	int len = toUShort(tmp);//toShort(tmp1, tmp2);
+//					System.out.println(HexDump.dumpHexString(tmp));
+//					System.out.println(String.format("len ==> %d", len));
+//					System.out.println(String.format("i ==> %d", i));
 					mStrings.add(i,new String(rawStrings,offset+2, len*2, Charset.forName("UTF-16LE")));
 				}
 			}
