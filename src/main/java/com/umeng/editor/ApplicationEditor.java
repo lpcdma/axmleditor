@@ -104,7 +104,6 @@ public class ApplicationEditor {
         if (name > 0) {
             System.out.println(doc.getStringBlock().getStringFor(name));
             setChannel(doc.getStringBlock().getStringFor(name));
-            registStringBlockMetaData(doc.getStringBlock());
             editMetaData(doc);
             if (name == application_name) {
                 System.out.println("application name not release");
@@ -116,7 +115,6 @@ public class ApplicationEditor {
             }
         } else {
             System.out.println("no application name");
-            registStringBlockMetaData(doc.getStringBlock());
             editMetaData(doc);
             BTagNode.Attribute name_attr = new BTagNode.Attribute(namespace, attr_name, TypedValue.TYPE_STRING);
             name_attr.setString(application_name);
@@ -163,6 +161,7 @@ public class ApplicationEditor {
 
     public void commit() {
         registStringBlock(doc.getStringBlock());
+        registStringBlockMetaData(doc.getStringBlock());
         checkResValue();
         editNode(doc);
     }
