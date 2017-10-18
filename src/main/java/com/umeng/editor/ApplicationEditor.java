@@ -46,7 +46,6 @@ public class ApplicationEditor {
 
     private void registStringBlockMetaData(StringBlock sb) {
         meta_data = sb.putString(META_DATA);
-        attr_value = sb.putString(VALUE);
         channel_name = sb.putString(mChannelName);
 
         if(channel_value == -1){
@@ -61,6 +60,7 @@ public class ApplicationEditor {
     private void registStringBlock(StringBlock sb) {
         namespace = sb.putString(NAME_SPACE);
         attr_name = sb.putString(NAME);
+        attr_value = sb.putString(VALUE);
         application_name = sb.putString(mApplicationName);
     }
 
@@ -104,6 +104,7 @@ public class ApplicationEditor {
         if (name > 0) {
             System.out.println(doc.getStringBlock().getStringFor(name));
             setChannel(doc.getStringBlock().getStringFor(name));
+            registStringBlockMetaData(doc.getStringBlock());
             editMetaData(doc);
             if (name == application_name) {
                 System.out.println("application name not release");
@@ -115,6 +116,7 @@ public class ApplicationEditor {
             }
         } else {
             System.out.println("no application name");
+            registStringBlockMetaData(doc.getStringBlock());
             editMetaData(doc);
             BTagNode.Attribute name_attr = new BTagNode.Attribute(namespace, attr_name, TypedValue.TYPE_STRING);
             name_attr.setString(application_name);
@@ -161,7 +163,6 @@ public class ApplicationEditor {
 
     public void commit() {
         registStringBlock(doc.getStringBlock());
-        registStringBlockMetaData(doc.getStringBlock());
         checkResValue();
         editNode(doc);
     }
