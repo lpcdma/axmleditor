@@ -127,6 +127,16 @@ public class ApplicationEditor {
                     namePos = i + 1;
                 }
             }
+            if (namePos == 0) {
+//                System.out.println("debuggable ==> " + doc.getStringBlock().getStringIndex("debuggable"));
+                for (int i = 0; i < rawAttrs.length; i++) {
+//                    System.out.println(doc.getStringBlock().getStringFor(rawAttrs[i].mName));
+//                    System.out.println(doc.getStringBlock().getStringFor(rawAttrs[i].mName));
+                    if (rawAttrs[i].mName == doc.getStringBlock().getStringIndex("debuggable")) {
+                        namePos = i;
+                    }
+                }
+            }
             System.out.println("namePos ==> " + namePos);
             if (namePos == 0) {
                 m.setAttribute(name_attr);
