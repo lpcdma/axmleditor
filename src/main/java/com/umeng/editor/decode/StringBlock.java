@@ -61,6 +61,10 @@ public class StringBlock implements IAXMLSerialize{
 			
 			return -1;
 		}
+
+		public boolean isUTF8() {
+			return (mEncoder & (1<<8)) != 0;
+		}
 		
 		public int putString(String str){
 			if(containsString(str)){
@@ -131,17 +135,32 @@ public class StringBlock implements IAXMLSerialize{
 			if(mStringsCount >0){
 				int size = ((mStyBlockOffset == 0)?mChunkSize:mStyBlockOffset) - mStrBlockOffset;
 				byte[] rawStrings = reader.readByteArray(size);
-				
+
+				//System.out.println(HexDump.dumpHexString(rawStrings));
+
+				//System.out.println("mStringsCount ==> " + mStringsCount);
 				for(int i =0; i < mStringsCount ; i++){
 					int offset = mPerStrOffset[i];
 					byte[] tmp = {0,0,0,0};
-					tmp[3] = rawStrings[offset];
-					tmp[2] = rawStrings[offset+1];
-		        	int len = toUShort(tmp);//toShort(tmp1, tmp2);
-//					System.out.println(HexDump.dumpHexString(tmp));
-//					System.out.println(String.format("len ==> %d", len));
-//					System.out.println(String.format("i ==> %d", i));
-					mStrings.add(i,new String(rawStrings,offset+2, len*2, Charset.forName("UTF-16LE")));
+					if (!isUTF8()) {
+						tmp[3] = rawStrings[offset];
+						tmp[2] = rawStrings[offset+1];
+						int len = toUShort(tmp);//toShort(tmp1, tmp2);
+//						System.out.println(HexDump.dumpHexString(tmp));
+//						System.out.println(String.format("len ==> %d", len));
+//						System.out.println(String.format("i ==> %d", i));
+						mStrings.add(i,new String(rawStrings,offset+2, len*2, Charset.forName("UTF-16LE")));
+					} else  {
+//						System.out.println("utf8");
+						tmp[3] = rawStrings[offset+1];
+						//tmp[2] = rawStrings[offset+1];
+						int len = toUShort(tmp);//toShort(tmp1, tmp2);
+//						System.out.println(HexDump.dumpHexString(tmp));
+//						System.out.println(String.format("len ==> %d", len));
+//						System.out.println(String.format("i ==> %d", i));
+						mStrings.add(i,new String(rawStrings,offset+2, len, Charset.forName("UTF-8")));
+					}
+
 				}
 			}
 			
