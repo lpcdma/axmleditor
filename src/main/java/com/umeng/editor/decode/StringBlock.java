@@ -151,8 +151,8 @@ public class StringBlock implements IAXMLSerialize{
 //						System.out.println(String.format("i ==> %d", i));
 						mStrings.add(i,new String(rawStrings,offset+2, len*2, Charset.forName("UTF-16LE")));
 					} else  {
-//						System.out.println("utf8");
-						tmp[3] = rawStrings[offset+1];
+//						System.out.println(String.format("offset ==> %x", offset));
+						tmp[3] = rawStrings[offset];
 						//tmp[2] = rawStrings[offset+1];
 						int len = toUShort(tmp);//toShort(tmp1, tmp2);
 //						System.out.println(HexDump.dumpHexString(tmp));
@@ -200,22 +200,43 @@ public class StringBlock implements IAXMLSerialize{
 			
 			if(mPerStrOffset != null){
 				for(int offset : mPerStrOffset){
+					//System.out.println("AAAAAAAAAAAAAAAAAAA"+offset);
 					size += writer.writeInt(offset);
 				}
 			}
 			
 			if(mPerStyOffset != null){
 				for(int offset : mPerStyOffset){
+					//System.out.println("AAAAAAAAAAAAAAAAAAA"+offset);
 					size += writer.writeInt(offset);
 				}
 			}
 			
 			if(mStrings != null){
 				for(String s : mStrings){
-					byte[] raw = s.getBytes("UTF-16LE");
-					size += writer.writeShort((short)(s.length()));
-					size += writer.writeByteArray(raw);
-					size += writer.writeShort((short)0);
+					byte[] raw;
+					if (isUTF8()) {
+						raw = s.getBytes("UTF-8");
+//						size += writer.writeShort((short)(s.length()));
+//						size += writer.writeByteArray(raw);
+//						size += writer.writeShort((short)0);
+						writer.writeByte((byte)(s.length())); // u16len
+						size += 1;
+						writer.writeByte((byte)(s.length())); // u8len
+						size += 1;
+						size += writer.writeByteArray(raw);
+						writer.writeByte((byte)0);
+						size += 1;
+					} else {
+						raw = s.getBytes("UTF-16LE");
+						size += writer.writeShort((short)(s.length()));
+						size += writer.writeByteArray(raw);
+						size += writer.writeShort((short)0);
+					}
+//					byte[] raw = s.getBytes("UTF-16LE");
+//					size += writer.writeShort((short)(s.length()));
+//					size += writer.writeByteArray(raw);
+//					size += writer.writeShort((short)0);
 				}
 			}
 			
@@ -248,7 +269,12 @@ public class StringBlock implements IAXMLSerialize{
 				for(int i =0; i< mStrings.size(); i++){
 					perStrSize[i] = size;
 					try{
-						size += 2 + mStrings.get(i).getBytes("UTF-16LE").length + 2;
+						if (isUTF8()) {
+							size += 2 + mStrings.get(i).getBytes("UTF-8").length + 1;
+						} else {
+							size += 2 + mStrings.get(i).getBytes("UTF-16LE").length + 2;
+						}
+						//size += 2 + mStrings.get(i).getBytes("UTF-16LE").length + 2;
 					}catch(UnsupportedEncodingException e){
 						throw new IOException(e);
 					}
