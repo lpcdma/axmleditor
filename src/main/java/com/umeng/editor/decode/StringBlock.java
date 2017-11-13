@@ -247,7 +247,11 @@ public class StringBlock implements IAXMLSerialize{
 			}
 			
 			if(mChunkSize > size){
-				writer.writeShort((short)0);
+				if (isUTF8()) {
+					writer.writeByte((byte)0);
+				} else {
+					writer.writeShort((short)0);
+				}
 			}
 			
 		}
