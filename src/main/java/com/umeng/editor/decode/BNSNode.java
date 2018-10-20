@@ -42,7 +42,7 @@ public class BNSNode extends BXMLNode {
 //			System.out.println(String.format("uri ==> %d", uri));
 //			System.out.println(String.format("mUri ==> %d", mUri));
 			//throw new IOException("Invalid end element");
-			System.out.println("Invalid end element");
+			// System.out.println("Invalid end element");
 		}
 	}
 	
