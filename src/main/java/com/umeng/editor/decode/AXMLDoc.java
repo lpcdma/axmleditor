@@ -12,6 +12,7 @@ public class AXMLDoc {
 	private final int CHUNK_STRING_BLOCK = 0X001C0001;
 	private final int CHUNK_RESOURCE_ID = 0X00080180;
 	private final int CHUNK_XML_TREE = 0X00100100;
+	private final int CHUNK_XML_TREE_DX = 0X00140100;
 	
 	private final String MANIFEST 	 = "manifest";
 	private final String APPLICATION = "application";
@@ -140,7 +141,7 @@ public class AXMLDoc {
 
 		chunkType = reader.readInt();
 		
-		if(chunkType == CHUNK_XML_TREE){
+		if(chunkType == CHUNK_XML_TREE || chunkType == CHUNK_XML_TREE_DX){
 			parseXMLTree(reader);
 		}
 	}

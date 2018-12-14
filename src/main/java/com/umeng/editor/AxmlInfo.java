@@ -100,6 +100,8 @@ public class AxmlInfo {
                 if ("provider".equals(doc.getStringBlock().getStringFor(c.getName()))) {
                     if (doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)).substring(0, 1).equals(".")) {
                         System.out.println(package_name + doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
+                    } else if(!doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)).contains(".")) {
+                        System.out.println(package_name + "." + doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
                     } else {
                         System.out.println(doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
                     }
@@ -125,6 +127,8 @@ public class AxmlInfo {
                     if (isL) {
                         if (doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)).substring(0, 1).equals(".")) {
                             System.out.println(package_name + doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
+                        } else if(!doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)).contains(".")) {
+                            System.out.println(package_name + "." + doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
                         } else {
                             System.out.println(doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
                         }
@@ -132,6 +136,8 @@ public class AxmlInfo {
                     if (!isL && isM) {
                         if (doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)).substring(0, 1).equals(".")) {
                             System.out.println(package_name + doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
+                        } else if(!doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)).contains(".")) {
+                            System.out.println(package_name + "." + doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
                         } else {
                             System.out.println(doc.getStringBlock().getStringFor(c.getAttrStringForKey(attr_name)));
                         }
